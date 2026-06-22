@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIKKI Community Health Bot</title>
+    <style>
+        /* ============================== */
+        /* UI: CRYSTALY HOSPITAL VIBE     */
+        /* ============================== */
+
+        :root {
+            --bg-color: #f1fdf9;
+            --primary-color: #0277bd;
+            --secondary-color: #26c6da;
+            --user-bubble-bg: #ffffff;
+            --bot-bubble-bg: linear-gradient(135deg, #b3e5fc, #81d4fa);
+            --text-color: #212121;
+            --header-text: #ffffff;
+            
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.18);
+            --glass-blur: blur(10px);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f1fdf9;
+            background-image: 
+                linear-gradient(135deg, #e0f7fa 0%, #ffffff 100%),
+                radial-gradient(at 10% 20%, #e1f5fe 0px, transparent 50%),
+                radial-gradient(at 90% 80%, #f1fdf9 0px, transparent 50%);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            background-color: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            border: var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background-color: var(--primary-color);
+            background-image: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--header-text);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .header-title-wrapper {
+            flex-grow: 1;
+        }
+
+        .header-title-wrapper h2 { margin: 0; font-size: 1.3rem; }
+        .header-title-wrapper p { margin: 5px 0 0 0; font-size: 0.8rem; opacity: 0.9; font-weight: normal;}
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #81c784;
+            border: 2px solid white;
+            box-shadow: 0 0 5px rgba(129, 199, 132, 0.5);
+        }
+
+        .message-list {
+            flex-grow: 1;
+            padding: 25px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 14px 18px;
+            line-height: 1.5;
+            font-size: 0.95rem;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .user-message {
+            background-color: var(--user-bubble-bg);
+            color: var(--text-color);
+            align-self: flex-end;
+            border-radius: 20px 20px 4px 20px;
+        }
+
+        .bot-message {
+            background: var(--bot-bubble-bg);
+            color: #ffffff;
+            align-self: flex-start;
+            border-radius: 20px 20px 20px 4px;
+        }
+
+        .bot-typing {
+            opacity: 0.7;
+            font-style: italic;
+        }
+
+        .input-container {
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 14px;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 30px;
+            outline: none;
+            font-size: 1rem;
+            background-color: #ffffff;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(38, 198, 218, 0.2);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            background-image: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.95rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 10px rgba(2, 119, 189, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(2, 119, 189, 0.4);
+        }
+
+        button:active { transform: translateY(1px); }
+
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="chat-header">
+        <div class="header-logo">
+            <svg width="35" height="35" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="32" r="32" fill="#0277bd"/>
+                <rect x="18" y="24" width="28" height="20" rx="4" fill="white"/>
+                <circle cx="27" cy="31" r="3" fill="#0277bd"/>
+                <circle cx="37" cy="31" r="3" fill="#0277bd"/>
+                <rect x="30" y="36" width="4" height="12" rx="2" fill="white"/>
+                <rect x="26" y="40" width="12" height="4" rx="2" fill="white"/>
+                <path d="M26 16C26 12.6863 28.6863 10 32 10C35.3137 10 38 12.6863 38 16" stroke="white" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+        </div>
+        <div class="header-title-wrapper">
+            <h2>NIKKI</h2>
+            <p>Community Health Assistant</p>
+        </div>
+        <div class="status-dot" title="Always Online"></div>
+    </div>
+    
+    <div class="message-list" id="chatBox">
+        <div class="message bot-message">Hello! I am a community health educator. How can I help you today?</div>
+    </div>
+
+    <div class="input-container">
+        <input type="text" id="userInput" placeholder="Ask about hygiene, health, or first-aid..." onkeypress="handleKeyPress(event)">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+    let conversationHistory = [];
+
+    // Using a relative URL to prevent browser CORS security blocks!
+    const BACKEND_URL = "/api/chat";
+
+    async function sendMessage() {
+        const inputField = document.getElementById("userInput");
+        const messageText = inputField.value.trim();
+        if (!messageText) return;
+
+        const chatBox = document.getElementById("chatBox");
+
+        // 1. Show user message
+        const userDiv = document.createElement("div");
+        userDiv.className = "message user-message";
+        userDiv.textContent = messageText;
+        chatBox.appendChild(userDiv);
+
+        inputField.value = "";
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        // 2. Add 'Typing...' indicator
+        const typingDiv = document.createElement("div");
+        typingDiv.className = "message bot-message bot-typing";
+        typingDiv.textContent = "Asking NIKKI...";
+        chatBox.appendChild(typingDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        try {
+            // 3. Send data to Flask
+            const response = await fetch(BACKEND_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ 
+                    message: messageText,
+                    history: conversationHistory 
+                })
+            });
+
+            const data = await response.json();
+
+            // 4. Remove 'Typing...' and show response
+            chatBox.removeChild(typingDiv);
+            
+            const botDiv = document.createElement("div");
+            botDiv.className = "message bot-message";
+            
+            if (data.response) {
+                botDiv.innerHTML = data.response.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                
+                // 5. Update memory
+                conversationHistory.push({ role: "user", content: messageText });
+                conversationHistory.push({ role: "model", content: data.response });
+            } else {
+                botDiv.textContent = "Sorry, I encountered an error. Please try again.";
+            }
+
+            chatBox.appendChild(botDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+        } catch (error) {
+            console.error("Error:", error);
+            chatBox.removeChild(typingDiv); 
+            
+            const errorDiv = document.createElement("div");
+            errorDiv.className = "message bot-message";
+            errorDiv.textContent = "Unable to connect. Please ensure the Flask app is running.";
+            chatBox.appendChild(errorDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    }
+
+    function handleKeyPress(event) {
+        if (event.key === "Enter") sendMessage();
+    }
+</script>
+
+</body>
+</html>
